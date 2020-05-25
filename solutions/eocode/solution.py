@@ -1,26 +1,37 @@
-"""Challenge 9 de Python.
-    Reto a resolver
-    Entrada: [1,0,2,3,0,4,5,0]
-    Salida: None
-    Why?: Después de llamar tu función, el arreglo de entrada es modificado para formar [1,0,0,2,3,0,0,4].
-    Ejemplo 2:
-
-    Entrada: [1, 2, 3]
-    Salida: None
-    Why?: Después de llamar tu función, el arreglo de entrada es modificado para formar [1,2,3].
-"""
+"""Challenge 9"""
 from typing import List
 
 
 class Solution:
-    """Clase de la solución."""
+    """Class of challenge solution."""
 
     def duplicate_zeros(self, arr: List[int]):
-        """Función que duplica los 0s sin alterar la memoria utilizada."""
-        indice = 0
-        while indice < len(arr):
-            if arr[indice] == 0:
-                arr.pop()
-                arr.insert(indice, 0)
-                indice = indice + 1
-            indice = indice + 1
+        """Function that duplicates 0s without altering the memory used."""
+        zeros = 0
+        a_len = len(arr)
+        secureZone = -1
+        for i, v in enumerate(arr):
+            if v == 0:
+                secureZone = i if secureZone == -1 else secureZone
+                if i + zeros + 1 < a_len:
+                    zeros += 1
+                else:
+                    break
+        b = a_len - 1
+        l = b - zeros
+        secureZone = secureZone + (zeros * 2)
+        while l >= 0:
+            if arr[l] != 0:
+                arr[b] = arr[l]
+                b -= 1
+            else:
+                if b == a_len-1 and (a_len - secureZone) % 2 == 1:
+                    arr[b] = 0
+                    b -= 1
+                    zeros -= 1
+                else:
+                    arr[b] = 0
+                    arr[b-1] = 0
+                    b -= 2
+                    zeros -= 1
+            l -= 1
